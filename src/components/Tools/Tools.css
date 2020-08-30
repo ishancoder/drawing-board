@@ -5,11 +5,15 @@
 .tool-element {
   padding: 20px;
   margin: 20px 0;
-  border: 2px solid transparent;
-  border-radius: 999em;
   cursor: pointer;
+  outline: none;
+  background: transparent;
+  transition: background 200ms ease-in-out, color 200ms ease-in-out,
+    border-radius 1s ease-in-out;
 }
 
 .tool--selected {
-  border-color: gray;
+  background: black;
+  color: white;
+  border-radius: 555px;
 }

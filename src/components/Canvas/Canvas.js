@@ -16,6 +16,7 @@ function Canvas({ tool, color, strokeWidth }) {
   const canvasRef = useRef();
   const context = useRef();
   const points = useRef([]);
+  const stateBeforeHighlighter = useRef();
   const [toolDown, setToolDown] = useState(false);
 
   useEffect(() => {
@@ -23,6 +24,27 @@ function Canvas({ tool, color, strokeWidth }) {
     context.current.lineJoin = "round";
     context.current.lineCap = "round";
   }, []);
+
+  const undoHighlighting = () => {
+    if (!stateBeforeHighlighter.current) return;
+
+    const ctx = context.current;
+    const img = document.createElement("img");
+    img.setAttribute("src", stateBeforeHighlighter.current);
+    const width = canvasRef.current.width;
+    const height = canvasRef.current.height;
+    img.onload = () => {
+      const previousAlpha = ctx.globalAlpha;
+      ctx.globalAlpha = 1;
+      ctx.clearRect(0, 0, width, height);
+      ctx.drawImage(img, 0, 0, width, height, 0, 0, width, height);
+      ctx.globalAlpha = previousAlpha;
+    };
+  };
+
+  const saveState = () => {
+    stateBeforeHighlighter.current = canvasRef.current.toDataURL();
+  };
 
   const mouseDownListener = (e) => {
     const ctx = context.current;
@@ -33,6 +55,7 @@ function Canvas({ tool, color, strokeWidth }) {
     ctx.shadowBlur = 1;
     ctx.globalAlpha = 1;
     ctx.globalCompositeOperation = "source-over";
+    undoHighlighting();
     if (tool === TOOL_TYPE.ERASER) {
       ctx.strokeStyle = "white";
       ctx.shadowColor = "white";
@@ -48,6 +71,9 @@ function Canvas({ tool, color, strokeWidth }) {
   const mouseUpListener = () => {
     setToolDown(false);
     points.current = [];
+    if (tool !== TOOL_TYPE.HIGHLIGHTER) {
+      saveState();
+    }
   };
 
   const mouseMoveListener = (e) => {
