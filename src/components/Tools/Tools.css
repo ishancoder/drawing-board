@@ -1,0 +1,15 @@
+.tools {
+  padding: 20px;
+}
+
+.tool-element {
+  padding: 20px;
+  margin: 20px 0;
+  border: 2px solid transparent;
+  border-radius: 999em;
+  cursor: pointer;
+}
+
+.tool--selected {
+  border-color: gray;
+}

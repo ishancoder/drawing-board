@@ -1,0 +1,5 @@
+export const TOOL_TYPE = {
+  MARKER: "MARKER",
+  HIGHLIGHTER: "HIGHLIGHTER",
+  ERASER: "ERASER",
+};

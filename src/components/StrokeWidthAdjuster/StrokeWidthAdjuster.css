@@ -1,0 +1,8 @@
+.stroke-width-adjuster {
+  display: block;
+  text-align: center;
+}
+
+.stroke-width-adjuster-input {
+  min-width: 600px;
+}
